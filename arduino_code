@@ -81,6 +81,12 @@ String connectAndRead(){
   //connect to the server
 
   Serial.println("connecting...");
+    if (firstTime) {
+      location = "/elevation/altitude.php?user=albertine&init=1 HTTP/1.0";
+    }else {
+       location = "/elevation/altitude.php?user=albertine&init=0 HTTP/1.0";
+    }
+    Serial.println(location);
 
   //port 80 is typical of a www page
   if (client.connect(server, 80)) {
@@ -149,7 +155,7 @@ String readPage(){
               Serial.println(" mv ");
             
            }else {
-              ret = 0;
+              ret = ret;
                Serial.print(ret,0);
              Serial.println(" metres altitude albertine");
               cur_alt = ret;

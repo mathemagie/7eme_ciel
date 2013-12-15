@@ -19,7 +19,7 @@ function getaltitude($lat,$lng){
 $hostname = "localhost";
 $dbname = "elevation";
 $username = "root";
-$pw = "P67=PMre-2";
+$pw = "xxxxxxx";
 
 if (!$link = mysql_connect($hostname, $username, $pw)) {
     echo 'Could not connect to mysql';

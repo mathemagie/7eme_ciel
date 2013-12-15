@@ -7,7 +7,7 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 $hostname = "localhost";
 $dbname = "elevation";
 $username = "root";
-$pw = "P67=PMre-2";
+$pw = "XXXXXXX";
 
 $user_id = 1;
 

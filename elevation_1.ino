@@ -24,8 +24,6 @@ byte mac[] = {0xAA, 0xBB, 0xCC, 0xDE, 0x02,0x00 };
 
 EthernetClient client;
 
-
-
 char inString[32]; // string for incoming serial data
 int stringPos = 0; // string index counter
 boolean startRead = false; // is reading?

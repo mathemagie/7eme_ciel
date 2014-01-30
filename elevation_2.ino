@@ -19,7 +19,8 @@ byte server[] = {213, 186, 33, 87};
 String location = "/elevation/altitude.php?user=2 HTTP/1.0";
 
 // if need to change the MAC address (Very Rare)
-byte mac[] = { 0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x02 };
+//byte mac[] = { 0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x02 };
+byte mac[] = {0xAA, 0xBB, 0xCC, 0xDE, 0x02,0x01 };
 ////////////////////////////////////////////////////////////////////////
 
 EthernetClient client;

@@ -55,9 +55,6 @@ void setup()
 }
 
 void loop(){
-  
-    
-
  if (initialisation) {
    digitalWrite(led, LOW);  
    Serial.println("initialise");
@@ -69,20 +66,13 @@ void loop(){
        initialisation = 0;
    }
  }
-
-
  Serial.println("get data from API");
  String pageValue = connectAndRead(); //connect to the server and read the output
-
-  //Serial.println(pageValue); //print out the findings.
- 
-  delay(5000); //wait 10 seconds before connecting again
-  }
+ delay(4000); //wait 10 seconds before connecting again
+}
 
  
 String connectAndRead(){
-  //connect to the server
-
   Serial.println("connecting...");
     if (firstTime) {
       location = "/elevation/altitude.php?user=1&init=1 HTTP/1.0";
@@ -101,9 +91,7 @@ String connectAndRead(){
 
     //Connected - Read the page
     return readPage(); //go and read the output
-    
-
-  }else{
+   }else{
     return "connection failed";
   }
 
@@ -130,64 +118,35 @@ String readPage(){
 
         }else{
           
-          //got what we need here! We can disconnect now
-        
           startRead = false;
           client.stop();
           client.flush();
           
-        // affiche la valeur au format Float. c'est une valeur numérique
           float ret = atof(inString);
-          
-           
-             if (!firstTime) {
-               //delta_alt = s - cur_alt;
-                //cur_alt = s;
-               //s = delta_alt;
-                Serial.print(ret,0);
+          if (!firstTime) {
+             Serial.print(ret,0);
              Serial.println(" return value");
-               delta_alt = ret * 1.8;
-                  // Serial.print(delta_alt,0);
-             //Serial.println(" delta altitude albertine");
-               cur_alt = cur_alt + delta_alt;
-              mv = delta_alt;
-             
-              Serial.print(cur_alt);
-              Serial.println(" valeur courante ");
-                Serial.print(mv);
-              Serial.println(" mv ");
-            
-           }else {
-              ret = ret;
-               Serial.print(ret,0);
-             Serial.println(" metres altitude albertine");
-              cur_alt = ret;
-              mv = ret;
+             delta_alt = ret ;
+             cur_alt = cur_alt + delta_alt;
+             mv = delta_alt * 1.8;
+             Serial.print(cur_alt);
+             Serial.println(" valeur courante ");
+             Serial.print(mv);
+             Serial.println(" mv ");
            }
-             
-          
-          
-        
-           //Serial.println(firstTime);
-         
-          rotate(mv*100, .5); 
-         delay(10000);   
-       
-       
-         
+           else {
+             ret = ret;
+             Serial.print(ret,0);
+             Serial.println(" metres altitude albertine");
+             cur_alt = ret;
+             mv = ret * 1.8;
+           }
+         rotate(mv*200, .5); 
+         delay(5000);   
          Serial.print("et (deconnecting) voila ");
          firstTime = 0;
-         
-         
-
-        // affiche la  valeur au format String. c'est une valeur de chaine de caractere
-        //  Serial.print("la string : ");
-        
-        return inString;
-          
-
-         
-        }
+         return inString;
+         }
 
       }
     }
@@ -195,21 +154,6 @@ String readPage(){
   }
 
 }
-
-void fairezero()
-{
-   val = digitalRead(inPin);
-  if (val == HIGH) {
-  rotate(0, .5); 
-  digitalWrite(led, HIGH);    // turn the LED on by making the voltage LOW
-  }
-else {
-  digitalWrite(led, LOW);  
-  rotate(1000, .5); 
- 
-}
-}
-
 
 
 void rotate(int steps, float speed){ 

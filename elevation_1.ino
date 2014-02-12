@@ -16,7 +16,7 @@ byte server[] = {213, 186, 33, 87};
 
 //The location to go to on the server
 //make sure to keep HTTP/1.0 at the end, this is telling it what type of file it is
-String location = "/elevation/altitude.php?user=1 HTTP/1.0";
+String location = "";
 
 // if need to change the MAC address (Very Rare)
 byte mac[] = {0xAA, 0xBB, 0xCC, 0xDE, 0x02,0x00 };

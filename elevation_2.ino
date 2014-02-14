@@ -19,13 +19,10 @@ byte server[] = {213, 186, 33, 87};
 String location = "/elevation/altitude.php?user=2 HTTP/1.0";
 
 // if need to change the MAC address (Very Rare)
-//byte mac[] = { 0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x02 };
-byte mac[] = {0xAA, 0xBB, 0xCC, 0xDE, 0x02,0x01 };
+byte mac[] = {0xAA, 0xBB, 0xCC, 0xDE, 0x02,0x01};
 ////////////////////////////////////////////////////////////////////////
 
 EthernetClient client;
-
-
 
 char inString[32]; // string for incoming serial data
 int stringPos = 0; // string index counter
@@ -37,7 +34,7 @@ int initialisation = 1;
 int firstTime = 1;
 int cur_alt = 0;
 int delta_alt;
-int mv;
+long mv;
 
 
 
@@ -58,33 +55,13 @@ void setup()
 }
 
 void loop(){
-  
-    
-
- if (initialisation) {
-   digitalWrite(led, LOW);  
-   Serial.println("initialise");
-   //val = digitalRead(inPin);
-   while (digitalRead(inPin) == LOW) {
-       digitalWrite(led, HIGH);  
-       rotate(1000, .5); 
-       Serial.println("back to 0");
-       initialisation = 0;
-   }
- }
-
-
  Serial.println("get data from API");
  String pageValue = connectAndRead(); //connect to the server and read the output
-
-  //Serial.println(pageValue); //print out the findings.
- 
-  delay(5000); //wait 10 seconds before connecting again
-  }
+ delay(5000); //wait 10 seconds before connecting again
+}
 
  
 String connectAndRead(){
-  //connect to the server
 
   Serial.println("connecting...");
     if (firstTime) {
@@ -101,12 +78,8 @@ String connectAndRead(){
     client.println(location);
     client.println("Host: we-love-the.net");
     client.println();
-
-    //Connected - Read the page
     return readPage(); //go and read the output
-    
-
-  }else{
+   }else{
     return "connection failed";
   }
 
@@ -132,63 +105,33 @@ String readPage(){
           stringPos ++;
 
         }else{
-          
-          //got what we need here! We can disconnect now
-        
+       
           startRead = false;
           client.stop();
           client.flush();
-          
-        // affiche la valeur au format Float. c'est une valeur numérique
           float ret = atof(inString);
           
-           
-             if (!firstTime) {
-               //delta_alt = s - cur_alt;
-                //cur_alt = s;
-               //s = delta_alt;
-                Serial.print(ret,0);
+          if (!firstTime) {
+             Serial.print(ret,0);
              Serial.println(" return value");
-               delta_alt = ret * 1.8;
-                  // Serial.print(delta_alt,0);
-             //Serial.println(" delta altitude albertine");
-               cur_alt = cur_alt + delta_alt;
-              mv = delta_alt;
-             
-              Serial.print(cur_alt);
-              Serial.println(" valeur courante ");
-                Serial.print(mv);
-              Serial.println(" mv ");
-            
+             delta_alt = ret;
+             cur_alt = cur_alt + delta_alt;
+             mv = delta_alt;
+             Serial.print(cur_alt);
+             Serial.println(" valeur courante ");
            }else {
-              ret = ret;
-               Serial.print(ret,0);
-             Serial.println(" metres altitude albertine");
+              Serial.print(ret,0);
+              Serial.println(" metres altitude albertine");
               cur_alt = ret;
               mv = ret;
            }
-             
-          
-          
-        
-           //Serial.println(firstTime);
-         
-          rotate(mv*100, .5); 
+         rotate(mv*600, .5); 
+         Serial.print(mv*600);
+         Serial.println(" mv ");
          delay(10000);   
-       
-       
-         
          Serial.print("et (deconnecting) voila ");
          firstTime = 0;
-         
-         
-
-        // affiche la  valeur au format String. c'est une valeur de chaine de caractere
-        //  Serial.print("la string : ");
-        
-        return inString;
-          
-
+         return inString;
          
         }
 
@@ -198,22 +141,6 @@ String readPage(){
   }
 
 }
-
-void fairezero()
-{
-   val = digitalRead(inPin);
-  if (val == HIGH) {
-  rotate(0, .5); 
-  digitalWrite(led, HIGH);    // turn the LED on by making the voltage LOW
-  }
-else {
-  digitalWrite(led, LOW);  
-  rotate(1000, .5); 
- 
-}
-}
-
-
 
 void rotate(int steps, float speed){ 
   //rotate a specific number of microsteps (8 microsteps per step) - (negitive for reverse movement)
